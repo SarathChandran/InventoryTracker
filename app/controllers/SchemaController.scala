@@ -1,5 +1,7 @@
 package controllers
 
+import java.io.File
+
 import scalikejdbc._
 import play.api.mvc.{Action, Controller}
 
@@ -24,6 +26,15 @@ object SchemaController extends Controller {
       """.execute().apply()
 
     Ok("Created")
+  }
+
+
+  def populateSchema(path: String) = {
+    SQL(s"""
+         copy InventoryLog(object_id, object_type, timestamp, object_changes)
+         from \'$path\' DELIMITER ',' ESCAPE '\\' CSV HEADER;
+
+      """).execute().apply()
   }
 
 
