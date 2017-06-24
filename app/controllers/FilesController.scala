@@ -13,7 +13,7 @@ object FilesController extends Controller {
     request.body.files.map { file =>
       val tmpFile = file.ref.moveTo(new File(s"/tmp/${file.filename}"))
       println("File Path" + tmpFile)
-      SchemaController.populateSchema(tmpFile.getPath)
+      SchemaController.populateSchema(tmpFile)
       tmpFile.delete
     }
     Ok("File Uploaded")

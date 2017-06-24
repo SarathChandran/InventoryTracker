@@ -1,7 +1,9 @@
 package controllers
 
-import java.io.File
+import java.io.{File, FileReader}
 
+import org.postgresql.copy.CopyManager
+import org.postgresql.core.BaseConnection
 import scalikejdbc._
 import play.api.mvc.{Action, Controller}
 
@@ -24,17 +26,18 @@ object SchemaController extends Controller {
              object_changes json not null
          );
       """.execute().apply()
-
     Ok("Created")
   }
 
-
-  def populateSchema(path: String) = {
-    SQL(s"""
+  def populateSchema(path: File) = {
+    val copyCSV = SQL(s"""
          copy InventoryLog(object_id, object_type, timestamp, object_changes)
-         from \'$path\' DELIMITER ',' ESCAPE '\\' CSV HEADER;
-
-      """).execute().apply()
+         from STDIN DELIMITER ',' ESCAPE '\\' CSV HEADER;
+      """).statement
+    using(ConnectionPool.borrow()) { conn =>
+      new CopyManager(conn.unwrap(classOf[BaseConnection]))
+        .copyIn(copyCSV, new FileReader(path))
+    }
   }
 
 
