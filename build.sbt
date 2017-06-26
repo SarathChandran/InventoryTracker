@@ -13,6 +13,7 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc" %% "scalikejdbc-config" % "2.5.2",
   "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.5.1",
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.8.9",
   ws
 )
 
