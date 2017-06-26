@@ -9,9 +9,6 @@ import util.JsonUtil
 
 import scala.util.{Failure, Success, Try}
 
-/**
-  * Created by sarchandran on 6/24/17.
-  */
 object InventoryLogController extends Controller {
 
   def create = Action {
@@ -25,13 +22,15 @@ object InventoryLogController extends Controller {
   }
 
   def upload = Action(parse.multipartFormData) { implicit request =>
-    request.body.files.map { file =>
+    val files = request.body.files
+    Try(files.map { file =>
       val tmpFile = file.ref.moveTo(new File(s"/tmp/${file.filename}"))
-      println("File Path" + tmpFile)
       InventoryLogService.populateSchema(tmpFile)
       tmpFile.delete
+    }) match {
+      case Success(_) => if(files.size <= 0) BadRequest("File Not uploaded!!") else Ok("File Uploaded")
+      case Failure(x) => BadRequest(s"Upload Error!! ${x.getMessage}")
     }
-    Ok("File Uploaded")
   }
 
   def track = Action { request =>
@@ -46,7 +45,7 @@ object InventoryLogController extends Controller {
     }) match {
       case Success(x: Some[Any]) => Ok(JsonUtil.toJson(x.getOrElse(Map.empty))).as(ContentTypes.JSON)
       case Success(_) => Ok("No updates available")
-      case Failure(_) => BadRequest("Expecting application/json request body")
+      case Failure(_) => BadRequest("Expecting all input parameters")
     }
   }
 

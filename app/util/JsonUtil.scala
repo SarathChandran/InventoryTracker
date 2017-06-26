@@ -8,9 +8,6 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
 import scala.reflect.{ClassTag, Manifest}
 
-/**
-  * Created by sarchandran on 6/25/17.
-  */
 object JsonUtil {
 
   val mapper = new ObjectMapper() with ScalaObjectMapper

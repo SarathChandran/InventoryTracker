@@ -3,12 +3,12 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                          controllers.ApplicationController.index
 
 # Schema access
-GET     /create                     controllers.InventoryLogController.create
-DELETE  /truncate                     controllers.InventoryLogController.truncate
-POST    /upload                     controllers.InventoryLogController.upload
+GET     /create                    controllers.InventoryLogController.create
+DELETE  /truncate                  controllers.InventoryLogController.truncate
+POST    /upload                    controllers.InventoryLogController.upload
 POST    /track                     controllers.InventoryLogController.track
 GET     /track/details             controllers.InventoryLogController.details
 

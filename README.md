@@ -1,37 +1,33 @@
-# scala/play-getting-started
+# Inventory Tracker
 
-A barebones Scala app (using the Play framework), which can easily be deployed to Heroku.  
+A Scala app (using the Play framework), to tack inventory status based on changelog.  
 
-This application support the [Getting Started with Scala/Play on Heroku](https://devcenter.heroku.com/articles/getting-started-with-scala) article - check it out.
+## Heroku Demo
 
-## Running Locally
+- The app is deployed in heroku running on [afternoon-tundra-74790](https://afternoon-tundra-74790.herokuapp.com/)
 
-Make sure you have Play and sbt installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/).
+- Refer sample changelog file [order_sample.csv](./order_sample.csv) for importing and testing inventory status.
 
-```sh
-$ git clone https://github.com/heroku/scala-getting-started.git
-$ cd scala-getting-started
-$ sbt compile stage
-$ heroku local
+[![Inventory Tracker](./inventory-tracker.png)](https://afternoon-tundra-74790.herokuapp.com/)
+
+## Sample Dataset
+
+[![Sample Data](./sample-data.png)](https://afternoon-tundra-74790.herokuapp.com/)
+
+## Example Scenario
+
+- What's the state of Order Id=1 At timestamp=1484733173 ?
+
+```
+{"customer_name"=>"Jack", "customer_address"=>"Trade St.", "status"=>"paid", "ship_date"=>"2017-01-18", "shipping_provider"=>"DHL"}
+```
+- What's the state of Order Id=1 At timestamp=1484722542 ?
+
+```
+{} # Object Didn't Exist at that time.
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
-```sh
-$ heroku create
-$ git push heroku master
-$ heroku open
+- What's the state of Order Id=1 At timestamp=1484731400 ?
 ```
-
-or
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
-## Documentation
-
-For more information about using Play and Scala on Heroku, see these Dev Center articles:
-
-- [Play and Scala on Heroku](https://devcenter.heroku.com/categories/language-support#scala-and-play)
-
+{"customer_name"=>"Jack", "customer_address"=>"Trade St.", "status"=>"unpaid"}
+```

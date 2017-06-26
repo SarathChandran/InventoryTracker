@@ -7,9 +7,8 @@ import org.postgresql.core.BaseConnection
 import scalikejdbc._
 import util.JsonUtil
 
-/**
-  * Created by sarchandran on 6/24/17.
-  */
+import scala.util.{Failure, Success, Try}
+
 object InventoryLogService {
 
   implicit val session = AutoSession
@@ -37,9 +36,12 @@ object InventoryLogService {
          copy InventoryLog(object_id, object_type, timestamp, object_changes)
          from STDIN DELIMITER ',' ESCAPE '\\' CSV HEADER;
       """).statement
-    using(ConnectionPool.borrow()) { conn =>
+    Try(using(ConnectionPool.borrow()) { conn =>
       new CopyManager(conn.unwrap(classOf[BaseConnection]))
         .copyIn(copyCSV, new FileReader(path))
+    }) match {
+      case Failure(_) => throw new Exception("Invalid Changelog File")
+      case Success(_) =>
     }
   }
 
