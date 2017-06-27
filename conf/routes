@@ -6,7 +6,7 @@
 GET     /                          controllers.ApplicationController.index
 
 # Schema access
-GET     /create                    controllers.InventoryLogController.create
+POST    /create                    controllers.InventoryLogController.create
 DELETE  /truncate                  controllers.InventoryLogController.truncate
 POST    /upload                    controllers.InventoryLogController.upload
 POST    /track                     controllers.InventoryLogController.track
